@@ -66,14 +66,14 @@ To check the output, use a program that can compare text files.  Search online f
 ## Part 1 (0%)
 
 This workshop consists of two modules:
-- `w2_p1_main` (supplied)
+- `w2_p1` (supplied)
 - `AirportModels`
 
 Enclose all your source code within the `sdds` namespace and include the necessary guards in each header file.
 
 
 
-### `w2_p1_main` Module (supplied)
+### `w2_p1` Module (supplied)
 
 **Do not modify this module!**  Look at the code and make sure you understand it.
 
