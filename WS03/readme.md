@@ -119,6 +119,11 @@ std::ostream& operator<<(std::ostream& os, const Book& bk);
 
 An object of `Book` type is valid or usable only when the title is not empty (has at least one character), it has at least one chapter, and it has at least one page.
 
+When a book is valid, the data should be printed like (look in the sample output for more info about formatting options):
+```
+TITLE,NUM_CHAPTERS,NUM_PAGES,AVERAGE_PAGES_PER_CHAPTER
+```
+
 *🗎 In reflection, **explain** why it was necessary for you to add the members that you added into the `Book` class.*
 
 ### `Collection` Module
