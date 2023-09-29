@@ -121,8 +121,13 @@ An object of `Book` type is valid or usable only when the title is not empty (ha
 
 When a book is valid, the data should be printed like (look in the sample output for more info about formatting options):
 ```
-TITLE,NUM_CHAPTERS,NUM_PAGES,AVERAGE_PAGES_PER_CHAPTER
+TITLE,NUM_CHAPTERS,NUM_PAGES | (AVERAGE_PAGES_PER_CHAPTER)
 ```
+where `TITLE,NUM_CHAPTERS,NUM_PAGES` forms a single field aligned to the right and having a width of 56 characters, while `(AVERAGE_PAGES_PER_CHAPTER)` is another field, aligned to the left and having a width of 15 characters. When implementing this function, consider these following for constructing the two fields:
+  - [std::to_string()](https://en.cppreference.com/w/cpp/string/basic_string/to_string)
+  - [std::string](https://en.cppreference.com/w/cpp/header/string)
+  - [std::string::operator+()](https://en.cppreference.com/w/cpp/string/basic_string/operator%2B)
+  - [std::string::operator+=()](https://en.cppreference.com/w/cpp/string/basic_string/operator%2B%3D)
 
 *🗎 In reflection, **explain** why it was necessary for you to add the members that you added into the `Book` class.*
 
