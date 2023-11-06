@@ -47,8 +47,13 @@ All your code should be compiled using this command on `matrix`:
 After compiling and testing your code, run your program as following to check for possible memory leaks (assuming your executable name is `ws`):
 
 ```bash
-valgrind ws
+valgrind --show-error-list=yes --leak-check=full --show-leak-kinds=all --track-origins=yes ws
 ```
+
+- `--show-error-list=yes`: show the list of detected errors
+- `--leak-check=full`: check for all types of memory problems
+- `--show-leak-kinds=all`: show all types of memory leaks identified (enabled by the previous flag)
+- `--track-origins=yes`: tracks the origin of uninitialized values (`g++` must use `-g` flag for compilation, so the information displayed here is meaningful).
 
 To check the output, use a program that can compare text files.  Search online for such a program for your platform, or use *diff* available on `matrix`.
 
