@@ -67,6 +67,7 @@ int main(int argc, char** argv)
 
 	// get the books
 	sdds::Collection<sdds::Book> library("Bestsellers");
+	unsigned countB = 0;
 	if (argc == 5) {
 		// TODO: load the first 4 books from the file "argv[1]".
 		//       - read one line at a time, and pass it to the Book constructor
@@ -74,7 +75,25 @@ int main(int argc, char** argv)
 		//       - lines that start with "#" are considered comments and should be ignored
 		//       - if the file cannot be open, print a message to standard error console and
 		//                exit from application with error code "AppErrors::CannotOpenFile"
-
+		std::ifstream fin(argv[1]);
+		if (fin)
+		{
+			std::string line{};
+			do
+			{
+				std::getline(fin, line, '\n');
+				if (line[0] != '#' && line != "")
+				{
+					library += sdds::Book(line);
+					countB++;
+				}
+			} while (fin && countB < 4);
+		}
+		else
+		{
+			std::cerr << "ERROR: Cannot Open File.\n";
+			exit(AppErrors::CannotOpenFile);
+		}
 
 
 
@@ -88,9 +107,21 @@ int main(int argc, char** argv)
 		library.setObserver(bookAddedObserver);
 
 		// TODO: add the rest of the books from the file.
+		if (fin)
+		{
+			std::string line{};
+			do
+			{
+				std::getline(fin, line, '\n');
+				if (line[0] != '#' && line != "")
+				{
+					library += sdds::Book(line);
+					countB++;
+				}
+			} while (fin);
+		}
 
-
-
+		fin.close();
 	}
 	else
 	{
@@ -107,7 +138,18 @@ int main(int argc, char** argv)
 	//            and save the new price in the book object
 	//       - if the book was published in UK between 1990 and 1999 (inclussive),
 	//            multiply the price with "gbpToCadRate" and save the new price in the book object
-
+	auto convert = [&](sdds::Book& book)
+		{
+			if (book.country() == "US")
+			{
+				book.price() = book.price() * usdToCadRate;
+			}
+			else if (book.country() == "UK" && (book.year() >= 1990 && 1999 >= book.year()))
+			{
+				book.price() = book.price() * gbpToCadRate;
+			}
+			return book;
+		};
 
 
 	std::cout << "-----------------------------------------\n";
@@ -118,7 +160,8 @@ int main(int argc, char** argv)
 
 	// TODO (from part #1): iterate over the library and update the price of each book
 	//         using the lambda defined above.
-
+	for (unsigned i = 0; i < countB; i++)
+		library[i] = convert(library[i]);
 
 
 	std::cout << "-----------------------------------------\n";
@@ -128,18 +171,31 @@ int main(int argc, char** argv)
 	std::cout << "-----------------------------------------\n\n";
 
 	sdds::Collection<sdds::Movie> theCollection("Action Movies");
+	sdds::Collection<sdds::Movie> col2("Better Action Movies");
+	
 
 	// Process the file
 	sdds::Movie movies[5];
+	size_t countM{};
 	if (argc > 2) {
 		// TODO: load 5 movies from the file "argv[2]".
 		//       - read one line at a time, and pass it to the Movie constructor
 		//       - store each movie read into the array "movies"
 		//       - lines that start with "#" are considered comments and should be ignored
 
+		std::fstream fin(argv[2]);
+		if (fin)
+		{
+			std::string line{};
+			do
+			{
+				std::getline(fin, line, '\n');
+				if (line[0] != '#' && line != "")
+					movies[countM++] = sdds::Movie(line);
+			} while (fin && countM < 5);
+		}
 
-
-
+		fin.close();
 	}
 
 	std::cout << "-----------------------------------------\n";
@@ -154,25 +210,45 @@ int main(int argc, char** argv)
 		theCollection += movies[3];
 		theCollection += movies[3];
 		theCollection += movies[4];
+		((col2 += movies[2]) += movies[1]) += movies[0];
 	}
 	else {
 		std::cout << "** No movies in the Collection\n";
 	}
+	std::cout << "----------------Testing Move Operator-------------------------\n\n";
+	std::cout << "------Movie Collection 1 --------\n"
+		<< theCollection << "----------------------------------------\n"
+		<< "----------------Movie Collection 2 ---------------------\n"
+		<< col2 << "---------------------------------------------\n"
+		<< "--------------------Moving Movie Col 2 >> Col 1 -----------\n";
+	theCollection = std::move(col2);
+	sdds::Collection<sdds::Movie> col3;
+	
 	std::cout << "-----------------------------------------\n\n";
 	
 	std::cout << "-----------------------------------------\n";
 	std::cout << "Testing exceptions and operator[]\n";
 	std::cout << "-----------------------------------------\n";
 
+	
 
 		// TODO: The following loop can generate generate an exception
 		//         write code to handle the exception
 		//       If an exception occurs print a message in the following format
 		//** EXCEPTION: ERROR_MESSAGE<endl>
 		//         where ERROR_MESSAGE is extracted from the exception object.
-		for (auto i = 0u; i < 10; ++i)
-			std::cout << theCollection[i];
-
+	
+	
+		try
+		{
+			for (auto i = 0u; i < 10; ++i)
+				std::cout << theCollection[i];
+		}
+		catch (const std::out_of_range& message)
+		{
+			std::cout << "** EXCEPTION: " << message.what() << std::endl;
+		}
+	
 	std::cout << "-----------------------------------------\n\n";
 
 
@@ -186,6 +262,8 @@ int main(int argc, char** argv)
 			//       If an exception occurs print a message in the following format
 			//** EXCEPTION: ERROR_MESSAGE<endl>
 			//         where ERROR_MESSAGE is extracted from the exception object.
+		try
+		{
 			sdds::SpellChecker sp(argv[i]);
 			for (auto j = 0u; j < library.size(); ++j)
 				library[j].fixSpelling(sp);
@@ -194,6 +272,12 @@ int main(int argc, char** argv)
 			for (auto j = 0u; j < theCollection.size(); ++j)
 				theCollection[j].fixSpelling(sp);
 			sp.showStatistics(std::cout);
+		}
+		catch (const char* message)
+		{
+			std::cout << "** EXCEPTION: " << message << std::endl;
+		}
+			
 	}
 	if (argc < 3) {
 		std::cout << "** Spellchecker is empty\n";
@@ -217,6 +301,9 @@ int main(int argc, char** argv)
 	if (aMovie != nullptr)
 		std::cout << "In this collection:\n" << *aMovie;
 	std::cout << "-----------------------------------------\n";
+	std::cout << "--------------------Moving Movie Col 1 >> Col 3 -----------\n";
+	col3 = std::move(theCollection);
+	std::cout << "-----------col3-----------\n" << col3;
 
 	return cout;
 }

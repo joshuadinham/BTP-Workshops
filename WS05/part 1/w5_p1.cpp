@@ -34,8 +34,25 @@ int main(int argc, char** argv)
 
 	// get the books
 	sdds::Book library[7];
+	unsigned count = 0;
 	if (argc == 2) {
 		// TODO: load the collection of books from the file "argv[1]".
+		std::ifstream file(argv[1]);
+		if (file)
+		{
+			std::string line{};
+			do
+			{
+				std::getline(file, line, '\n');
+				if (line[0] != '#' && line != "")
+					library[count++] = sdds::Book(line);
+			} while (file);
+		}
+		else
+		{
+			std::cerr << "AppErrors::CannotOpenFile.\n";
+			exit(AppErrors::CannotOpenFile);
+		}
 		//       - read one line at a time, and pass it to the Book constructor
 		//       - store each book read into the array "library"
 		//       - lines that start with "#" are considered comments and should be ignored
@@ -57,28 +74,50 @@ int main(int argc, char** argv)
 	//            and save the new price in the book object
 	//       - if the book was published in UK between 1990 and 1999 (inclussive),
 	//            multiply the price with "gbpToCadRate" and save the new price in the book object
-
+	
+	auto convert = [&](sdds::Book& book)
+	{
+			if (book.country() == "US")
+			{
+				book.price() = book.price() * usdToCadRate;
+			}
+			else if (book.country() == "UK" && (book.year() > 1990 && book.year() < 1999))
+			{
+				book.price() = book.price() * gbpToCadRate;
+			}
+			return book.price();
+	};
+	
 
 
 	std::cout << "-----------------------------------------\n";
 	std::cout << "The library content\n";
 	std::cout << "-----------------------------------------\n";
 	// TODO: iterate over the library and print each book to the screen
-
+	for (unsigned i = 0; i < count; i++)
+	{
+		std::cout << library[i] << std::endl;
+	}
 
 
 	std::cout << "-----------------------------------------\n\n";
 
 	// TODO: iterate over the library and update the price of each book
 	//         using the lambda defined above.
-
+	for (unsigned i = 0; i < count; i++)
+	{
+		library[i].price() = convert(library[i]);
+	}
 
 
 	std::cout << "-----------------------------------------\n";
 	std::cout << "The library content (updated prices)\n";
 	std::cout << "-----------------------------------------\n";
 	// TODO: iterate over the library and print each book to the screen
-
+	for (unsigned i = 0; i < count; i++)
+	{
+		std::cout << library[i] << std::endl;
+	}
 
 
 	std::cout << "-----------------------------------------\n";

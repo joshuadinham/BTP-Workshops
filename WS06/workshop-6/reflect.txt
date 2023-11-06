@@ -1,0 +1,8 @@
+During this workshop I learned about how to properly use vectors and iterators. One of the main issues I ran into was using dynamically allocated objects as the elements in a vector. I had run into issues with memory leaks because I didn't understand that deleting the root directory would delete every item in the m_contents until it reached a directory and then it would delete that m_contents.
+I also found that the remove function was difficult because I wanted to make it recursively delete folders that were in other folders. I was having memory leaks until I decided to use delete m_contents there as well and then I was having a problem where after I removed a directory, when ever I used the find function it would hit that directory that had been deleted as nullptr and I'd get a read access exception. 
+I fixed it by searching for the parent folder of the folder the user wants to delete and then deleting and using vector erase on that folder
+
+We need to deallocate the dynamically allocated memory in the vector of resources because vector does not handle memoroy deallocation in the remove or erase functions
+Directory objects are a type of Resource object but they are pointed to by resource pointers. So those pointers cannot use directory object functions unless they use the function 
+Directory* d = dynamic_cast<Directory*>(Resource*);
+Using Vector<sdds:Resource> would not work because Resource is a pure virtual class and cannot be instantiated at all. 

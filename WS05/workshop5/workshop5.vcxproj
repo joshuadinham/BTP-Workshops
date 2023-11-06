@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>X:\joshuadinham\repos\BTP-Workshops\WS05\workshop5</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,15 +128,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\part 1\w5_p1.cpp" />
+    <ClCompile Include="Book.cpp" />
+    <ClCompile Include="Collection.cpp" />
+    <ClCompile Include="Movie.cpp" />
+    <ClCompile Include="SpellChecker.cpp" />
+    <ClCompile Include="w5_p2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\part 1\books.txt" />
-    <Text Include="..\part 1\sample_output.txt" />
     <Text Include="..\part 2\books.txt" />
+    <Text Include="..\part 2\sample_output_p2.txt" />
+    <Text Include="movies.txt" />
+    <Text Include="test.txt" />
+    <Text Include="words.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Book.h" />
+    <ClInclude Include="Collection.h" />
+    <ClInclude Include="Movie.h" />
+    <ClInclude Include="SpellChecker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
