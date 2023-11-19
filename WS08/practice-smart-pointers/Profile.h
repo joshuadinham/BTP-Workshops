@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <ctype.h>
 
 namespace sdds {
 
@@ -88,7 +89,38 @@ namespace sdds {
 		}
 
 		// TODO: add a function here to validate the address
+		bool validateAddrress() {
+			bool valid = true;
 
+			for (int i = 0; i < Address_postal_code_length && valid; i++)
+			{
+				if (i < 3 && i % 2 == 0)
+				{
+					valid = !std::isdigit(m_address.postal_code.at(i));
+				}
+				else if (i < 3 && i % 2 != 0)
+				{
+					valid = std::isdigit(m_address.postal_code.at(i));
+				}
+				else if (i > 3 && i % 2 == 0)
+				{
+					valid = std::isdigit(m_address.postal_code.at(i));
+				}
+				else if (i > 3 && i % 2 != 0)
+				{
+					valid = !std::isdigit(m_address.postal_code.at(i));
+				}
+			}
+
+			if (valid == false || m_address.number < 1)
+			{
+				std::string err("ERROR: *** Invalid Address ***");
+				throw err;
+			}
+
+			return valid;
+			
+		}
 
 
 

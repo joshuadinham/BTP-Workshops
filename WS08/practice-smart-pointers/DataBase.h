@@ -10,6 +10,7 @@
 #include <memory>
 #include <utility>
 #include <fstream>
+#include <memory>
 
 namespace sdds {
     template <typename T>
@@ -37,7 +38,19 @@ namespace sdds {
 
 		// TODO: Overload the += operator with a raw pointer
 		//       as a second operand.
+		DataBase& operator+=(const T* record)
+		{
+			
+			database.push_back(*record);
+			return *this;
+		}
 
+		
+		DataBase& operator+=(const std::shared_ptr<T> record)
+		{
+			database.push_back(*record);
+			return *this;
+		}
 
 
 		void display(std::ostream& os) const {

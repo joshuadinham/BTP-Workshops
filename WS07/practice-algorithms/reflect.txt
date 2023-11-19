@@ -1,0 +1,60 @@
+This workshop is a challenge because of the restrictions being placed on it. Not being able to use manual loops is forcing me to really understand how iterators worrk but not only that, it's forcing me to find different types of iterators.
+The first issue I ran into was finding a way to read each line of the file without using a manual loop. Usually I would just manually loop through each line using getLine but this wasn't permitted. After some researh I realzied I would need an Istream iterator in order to read through the lines 1 line at a time. 
+
+I learned from the documentation that it does what I wanted it to do. 
+
+I learned to construct it by creating an istream iterator that uses the class CovidCollection as it's typename, and starts the iterationo at the beginning of the file passing the ifstream object into it.
+		std::istream_iterator<sdds::CovidCollection> begin(fin);
+The end of the iteration was simply called end
+		std::istream_iterator<sdds::CovidCollection> end;
+Using std::copoy I ran into an issue determining what the output of the ifstream would go to. The third value takes an iterator to the container you want to insert the values to so i created a vector<CovidCollection> fileContents, and set it to fileContents.begin() but when the program got to this line
+		std::copy(begin, end, fileContents.begin());
+I got a Debug Assertion Failed! error stating "Expression can't dereference value-initiated vector iterator"
+
+Googling this on stackOverflow I found that I was getting this error because I was trying to use copy() to insert elements into an empty vector; 
+The solution is to use std::back_inserter which is an iterator with a push_back method built into it.
+				std::copy(begin, end, std::back_inserter(fileContents));
+
+The next issue I ran into was that when I was reading the file, it was only reading it 1 word at a time instead of reading the whole like.
+Upon looking at istream_iterator documentation i found that it was calling operator>> to read the file. I overloaded operator>> in order to fix this problem and used getLine while inputting it into a private member variable vector<std::String> m_strings
+I had decided to overload the operator>> to be used in conjunction with the covidCollection object to insert all values into the m_strings variable. 
+
+std::istream& sdds::operator>>(std::istream& in, sdds::CovidCollection& col)
+{
+	std::string str;
+	std::getline(in, str);
+	col.m_strings.push_back(str);
+	return in;
+}
+
+I had a major problem at this point because the file contents were being copied to some instance of CovidCollection that was not the current object. I went through alot of different solutions that didn't work until I tried simply using std::string vectors for the istream_iterator and calling my m_strings member variable inside of the back_inserter to insert the values into the current object's collection but then the operator>> was not being called. I figured it's because of the restrictions  behind std::string so I created a class caalled line that simply implemented std::string aand used that insteaad
+
+//CovidCollection.h
+class line : public std::string {};
+class CovidCollection
+	{
+		...
+		std::vector<line> m_strings;
+		...
+	}
+std::istream& operator>>(std::istream& in, line& strings);
+
+//CovidCollection.cpp
+std::istream& sdds::operator>>(std::istream& in, line& string)
+{
+	
+	std::getline(in, string);
+	return in;
+}
+
+sdds::CovidCollection::CovidCollection(std::string& filename, std::string& name)
+{
+...
+
+		std::istream_iterator<line> begin(fin);
+		std::istream_iterator<line> end;
+		
+		std::copy(begin, end, back_inserter(m_strings));
+...
+}
+Now the files contents are in the current object, one line at a time.

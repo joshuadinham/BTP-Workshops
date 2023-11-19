@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{099fd857-7ade-4d19-83e2-81fdc01952ba}</ProjectGuid>
-    <RootNamespace>workshop6</RootNamespace>
+    <ProjectGuid>{90e3ab1b-7643-4522-a03a-a1605278477e}</ProjectGuid>
+    <RootNamespace>practicesmartpointers</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -104,6 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,25 +128,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataBase.h" />
+    <ClInclude Include="Profile.h" />
+    <ClInclude Include="Utilities.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AllProfiles.txt" />
+    <Text Include="BadProfiles.txt" />
+    <Text Include="GoodProfiles.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="readme.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="filesystem.txt" />
-    <Text Include="reflect.txt" />
-    <Text Include="sample_output.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Directory.cpp" />
-    <ClCompile Include="File.cpp" />
-    <ClCompile Include="Filesystem.cpp" />
-    <ClCompile Include="w6_p2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Directory.h" />
-    <ClInclude Include="File.h" />
-    <ClInclude Include="Filesystem.h" />
-    <ClInclude Include="Flags.h" />
-    <ClInclude Include="Resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

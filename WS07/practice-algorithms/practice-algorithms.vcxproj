@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{099fd857-7ade-4d19-83e2-81fdc01952ba}</ProjectGuid>
-    <RootNamespace>workshop6</RootNamespace>
+    <ProjectGuid>{1a5ceb38-2fb2-46d5-8428-b82e7a5406ba}</ProjectGuid>
+    <RootNamespace>practicealgorithms</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,25 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="readme.md" />
+    <ClCompile Include="CovidCollection.cpp" />
+    <ClCompile Include="w7_p2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="filesystem.txt" />
+    <Text Include="..\part 2\sample_output.txt" />
+    <Text Include="covids.txt" />
     <Text Include="reflect.txt" />
     <Text Include="sample_output.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Directory.cpp" />
-    <ClCompile Include="File.cpp" />
-    <ClCompile Include="Filesystem.cpp" />
-    <ClCompile Include="w6_p2.cpp" />
+    <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Directory.h" />
-    <ClInclude Include="File.h" />
-    <ClInclude Include="Filesystem.h" />
-    <ClInclude Include="Flags.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="CovidCollection.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
